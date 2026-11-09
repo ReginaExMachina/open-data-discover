@@ -99,3 +99,25 @@
   h1, h2, h3 { line-height: 1.25; letter-spacing: -0.015em; text-wrap: balance; }
   p { text-wrap: pretty; }
 }
+
+@layer components {
+  .pill-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-radius: 9999px;
+    background-color: var(--accent-soft);
+    padding: 0.125rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .pill-btn:hover {
+    background-color: var(--accent);
+    color: var(--surface);
+    text-decoration: none;
+  }
+}

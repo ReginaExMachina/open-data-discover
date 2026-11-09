@@ -16,8 +16,10 @@ export default function ColumnSummary({ column }: { column: Column }) {
       </h1>
       <p className="mt-1 text-sm text-dim">
         {column.resource} ·{' '}
-        <ExternalLink href={portalHref(dataset.name)}>
-          open.toronto.ca ↗
+        <ExternalLink
+          href={portalHref(dataset.name)}
+          className="pill-btn">
+          GET DATASET <span aria-hidden="true">↗</span>
         </ExternalLink>
       </p>
       <Examples values={column.samples} />
