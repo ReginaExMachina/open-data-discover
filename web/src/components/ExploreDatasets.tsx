@@ -264,7 +264,7 @@ export default function ExploreDatasets() {
                   </p>
                 )}
                 <p className="mt-2 text-[11px] text-dim">
-                  Joinable columns are linked. Columns with short values, such as IDs and codes, aren't listed.
+                  Joinable columns are linked.
                 </p>
               </div>
             </div>

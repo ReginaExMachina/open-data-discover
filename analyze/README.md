@@ -33,7 +33,7 @@ Filters work with `owners`, `list` and `run`. Different filters combine with AND
 | --- | --- |
 | `columns.parquet` | One row per profiled column: `id` (row number), `key` (`resource_id::column`), `package`, `resource_id`, `resource`, `file`, `column`, `n_values`, `n_distinct`, `avg_length`, `samples` |
 | `joins.parquet` | One row per candidate pair of columns from different files, best first: `id_a`, `id_b` (column ids, a < b), `shared` (distinct values in common), `containment_a_in_b`, `containment_b_in_a`, `jaccard`, `score` |
-| `datasets.parquet` | One row per selected package, from its portal metadata, for exploring datasets: `name`, `id`, `title`, `publisher`, `excerpt`, `description` (Markdown), `topics`, `civic_issues`, `tags` (lists of strings; `civic_issues` is often empty), `category`, `refresh_rate`, `last_refreshed` (`YYYY-MM-DD`) |
+| `datasets.parquet` | One row per selected package, from its portal metadata, for exploring datasets: `name`, `id`, `title`, `publisher`, `excerpt`, `description` (Markdown), `topics`, `civic_issues`, `tags` (lists of strings; `civic_issues` is often empty), `category`, `refresh_rate`, `last_refreshed` (`YYYY-MM-DD`), `columns` (every CSV column from its header, as `resource_id`, `resource`, `name`; including columns too short to profile) |
 | `manifest.json` | Selection, parameters, packages analyzed with each resource's `last_modified`, counts. Written last: no manifest means an incomplete run. |
 
 Scores, for a pair sharing `shared` distinct values:

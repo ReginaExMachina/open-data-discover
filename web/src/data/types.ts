@@ -11,13 +11,14 @@ export interface Dataset {
   /** The portal's civic issues, such as "Affordable housing"; often none. */
   civicIssues: string[];
   tags: string[];
-  /** Every profiled column, in file order. Columns with short values (IDs, codes) aren't profiled. */
+  /** Every column of its CSVs, in file order. */
   columns: Column[];
   /** Has a column that joins with another dataset. */
   joinable: boolean;
 }
 
 export interface Column {
+  /** Row in `columns.parquet`, or -1 if the column wasn't profiled (its values are too short to join). */
   id: number;
   key: string;
   name: string;
@@ -71,6 +72,14 @@ export interface DatasetRow {
   refresh_rate: string;
   /** YYYY-MM-DD, or empty. */
   last_refreshed: string;
+  /** Every column of the dataset's CSVs, in file order. */
+  columns: HeaderColumn[];
+}
+
+export interface HeaderColumn {
+  resource_id: string;
+  resource: string;
+  name: string;
 }
 
 export interface ColumnRow {

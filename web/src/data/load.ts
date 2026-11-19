@@ -6,6 +6,7 @@ import type {
   Data,
   Dataset,
   DatasetRow,
+  HeaderColumn,
   Join,
   JoinRow,
   Manifest,
@@ -40,13 +41,15 @@ export function buildData(
 ): Data {
   const datasets = datasetsFrom(manifest, datasetRows);
   const columns = columnRows.map(row => columnFromRow(row, datasets));
+  const byKey = new Map(columns.map(c => [c.key, c]));
   attachJoins(columns, joinRows);
-  listColumns(columns);
+  flagJoinable(columns);
+  listColumns(datasets, columns, byKey, datasetRows);
 
   return {
     analyzedAt: new Date(manifest.created_at),
     columns,
-    byKey: new Map(columns.map(c => [c.key, c])),
+    byKey,
     datasets: byTitle([...datasets.values()]),
   };
 }
@@ -149,13 +152,48 @@ function joinsAnotherDataset(column: Column) {
   return column.joins.some(j => j.other.dataset !== column.dataset);
 }
 
-/** Lists each dataset's columns, flagging those that join with another dataset. */
-function listColumns(columns: Column[]) {
+/** Flags the columns, and their datasets, that join with another dataset. */
+function flagJoinable(columns: Column[]) {
   for (const column of columns) {
     column.joinable = joinsAnotherDataset(column);
-    column.dataset.columns.push(column);
     if (column.joinable) column.dataset.joinable = true;
   }
+}
+
+/** A column that wasn't profiled, so it has no samples or joins. */
+function unprofiledColumn(dataset: Dataset, key: string, header: HeaderColumn): Column {
+  return {
+    id: -1,
+    key,
+    name: header.name,
+    resource: header.resource,
+    dataset,
+    samples: [],
+    joinable: false,
+    joins: [],
+  };
+}
+
+/** Lists each dataset's columns in file order, from the CSV headers in `datasets.parquet`. */
+function listColumns(
+  datasets: Map<string, Dataset>,
+  columns: Column[],
+  byKey: Map<string, Column>,
+  datasetRows: DatasetRow[],
+) {
+  const listed = new Set<Column>();
+  for (const row of datasetRows) {
+    const dataset = datasetNamed(datasets, row.name);
+    for (const header of row.columns) {
+      const key = `${header.resource_id}::${header.name}`;
+      const column = byKey.get(key) ?? unprofiledColumn(dataset, key, header);
+      dataset.columns.push(column);
+      listed.add(column);
+    }
+  }
+  // Profiled columns missing from the headers still get listed.
+  for (const column of columns)
+    if (!listed.has(column)) column.dataset.columns.push(column);
 }
 
 function byTitle(datasets: Dataset[]) {
