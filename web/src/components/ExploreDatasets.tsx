@@ -217,16 +217,27 @@ export default function ExploreDatasets() {
                 <h4 className="modal-section-title">
                   Description
                 </h4>
-                {/* The portal's description is Markdown; shown as plain text for now. */}
-                <p className="modal-description-text whitespace-pre-line">
-                  {activeModalDataset.description || activeModalDataset.excerpt}
+                <p className="modal-description-text">
+                  {activeModalDataset.excerpt || activeModalDataset.description}
                 </p>
+                {activeModalDataset.excerpt &&
+                  activeModalDataset.description &&
+                  activeModalDataset.description !== activeModalDataset.excerpt && (
+                    <details className="mt-2">
+                      <summary className="cursor-pointer text-[0.8rem] text-[var(--accent)]">
+                        Full description
+                      </summary>
+                      {/* The portal's description is Markdown; shown as plain text for now. */}
+                      <p className="modal-description-text mt-2 whitespace-pre-line">
+                        {activeModalDataset.description}
+                      </p>
+                    </details>
+                  )}
               </div>
 
               <div>
                 <h4 className="modal-section-title mb-2">
-                  Columns ({activeModalDataset.columns.length},{' '}
-                  {activeModalDataset.columns.filter(c => c.joinable).length} joinable)
+                  Columns ({activeModalDataset.columns.length})
                 </h4>
                 {activeModalDataset.columns.length > 0 ? (
                   <div className="modal-dictionary-container">
