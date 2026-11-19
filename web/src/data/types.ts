@@ -2,8 +2,19 @@ export interface Dataset {
   name: string;
   title: string;
   publisher: string;
-  /** Columns with at least one join to another dataset, in file order. */
+  /** One or two sentences from the portal. */
+  excerpt: string;
+  /** The portal's longer description, in Markdown. */
+  description: string;
+  /** The portal's topics, such as "Transportation". */
+  topics: string[];
+  /** The portal's civic issues, such as "Affordable housing"; often none. */
+  civicIssues: string[];
+  tags: string[];
+  /** Every profiled column, in file order. Columns with short values (IDs, codes) aren't profiled. */
   columns: Column[];
+  /** Has a column that joins with another dataset. */
+  joinable: boolean;
 }
 
 export interface Column {
@@ -13,6 +24,8 @@ export interface Column {
   resource: string;
   dataset: Dataset;
   samples: string[];
+  /** Joins with a column in another dataset. */
+  joinable: boolean;
   /** Best first. */
   joins: Join[];
 }
@@ -32,7 +45,7 @@ export interface Data {
   analyzedAt: Date;
   columns: Column[];
   byKey: Map<string, Column>;
-  /** Datasets with a join to another dataset, by title. */
+  /** Every analyzed dataset, by title. */
   datasets: Dataset[];
 }
 
@@ -41,6 +54,23 @@ export interface Data {
 export interface Manifest {
   created_at: string;
   packages: { name: string; title: string; owner: string }[];
+}
+
+export interface DatasetRow {
+  name: string;
+  id: string;
+  title: string;
+  publisher: string;
+  excerpt: string;
+  description: string;
+  topics: string[];
+  civic_issues: string[];
+  tags: string[];
+  /** Table, Map, Document, ... */
+  category: string;
+  refresh_rate: string;
+  /** YYYY-MM-DD, or empty. */
+  last_refreshed: string;
 }
 
 export interface ColumnRow {
