@@ -13,11 +13,7 @@ Currently, the project uses a data-driven approach to identify joinable columns 
 
 ---
 
-## Contributing
-
-Contributions from anyone are welcome! Whether you're writing code, testing, improving accessibility, or sharing feedback, we'd love to have you involved.
-
-### How to jump in
+## How to jump in
 
 1. Check the **[V1 Project Board](https://github.com/users/MaanasArora/projects/2)** linked above for open issues.
 2. **Comment on an issue** you'd like to take on and share a brief note on your approach or plan.
